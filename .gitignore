@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+env/
+
+# Django secrets and settings
+*.sqlite3
+db.sqlite3
+.env
+*.env
+
+# Migrations (optional, keep if you want to track migrations)
+**/migrations/*.pyc
+**/migrations/*.py
+
+# Logs and caches
+logs/
+*.log
+*.pot
+*.pid
+*.swp
+*.swo
+*.swn
+*.~*
+
+# Media and static files (if generated dynamically)
+media/
+staticfiles/
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.iml
+
+# Python dependency files (can be regenerated)
+Pipfile
+Pipfile.lock
+poetry.lock
