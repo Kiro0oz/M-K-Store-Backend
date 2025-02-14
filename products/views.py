@@ -1,6 +1,6 @@
-from rest_framework.generics import ListAPIView, RetrieveAPIView
-from .models import Product
-from .serializers import ReadProductSerializer
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
+from .models import Product, Review
+from .serializers import ReadProductSerializer, ReviewSerializer
 from django.core.cache import cache
 from datetime import timedelta
 from rest_framework.filters import SearchFilter
@@ -8,6 +8,8 @@ from rest_framework import status
 from rest_framework.exceptions import APIException
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 # Define a custom pagination class 
 class CustomPagination(PageNumberPagination):
@@ -65,3 +67,42 @@ class RetrieveProductView(RetrieveAPIView):
     serializer_class = ReadProductSerializer
     lookup_field = 'id'
     queryset = Product.objects.filter(quantity__gt=0)
+
+# Add Review Class
+
+
+class AddReviewView(CreateAPIView):
+    """
+    API endpoint to add a new review for a product In Authenticated Users.
+    """
+    serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        product_id = self.kwargs.get('id')  # Get product ID from URL
+
+        try:
+            product = Product.objects.get(id=product_id)
+        except Product.DoesNotExist:
+            return Response({"error": "Product not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(product=product, user=request.user)
+
+        return Response(
+            {"message": "Comment Added Successfully"},
+            status=status.HTTP_201_CREATED
+        )
+
+
+class ProductReviewListView(ListAPIView):
+    """
+    API endpoint to list all reviews for a product.
+    """
+    serializer_class = ReviewSerializer
+
+    def get_queryset(self):
+        product_id = self.kwargs.get('id')
+        return Review.objects.filter(product_id=product_id)
+

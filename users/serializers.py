@@ -16,7 +16,7 @@ class SignUpSerializer(serializers.ModelSerializer):
             'last_name':{'required': True, 'allow_blank': False} ,
             'email': {'required': True, 'allow_blank': False}, 
             'password': {'required': True, 'allow_blank': False},
-            }
+        }
         
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
