@@ -107,7 +107,16 @@ REST_FRAMEWORK = {
 
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Change this in production
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # Change this in production
+# EMAIL_BACKEND = 'django.core.mail.backends.consol.EmailBackend'  # Change this in production
+
+# Looking to send emails in production? Check out our Email API/SMTP product!
+EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+EMAIL_HOST_USER = '14a1f2325cfc1d'
+EMAIL_HOST_PASSWORD = '478d3af77823d8'
+EMAIL_PORT = '2525'
+EMAIL_USE_TLS: True
+EMAIL_USE_SSL: False
 
 # DJ Rest Auth Email Settings
 ACCOUNT_EMAIL_REQUIRED = True
