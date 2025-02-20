@@ -50,13 +50,14 @@ INSTALLED_APPS = [
     
     'social_django',
     'rest_framework',
-    'rest_framework.authtoken',  # ✅ Add this line
+    'rest_framework.authtoken',  
     'rest_framework_simplejwt',
     'corsheaders',
 
     'products.apps.ProductsConfig',
     'category.apps.CategoryConfig',
     'users',
+    'order.apps.OrderConfig',
 ]
 
 
