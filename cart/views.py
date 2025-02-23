@@ -7,12 +7,12 @@ from products.models import Product
 from django.contrib.auth.models import User
 from .serializers import CartSerializer
 
-# ✅ Get or create a cart for the user
+# Get or create a cart for the user
 def get_or_create_cart(user):
     cart, created = Cart.objects.get_or_create(user=user)
     return cart
 
-# ✅ Add products to cart
+# Add products to cart
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_to_cart(request):
@@ -65,3 +65,15 @@ def remove_from_cart(request, cart_item_id):
     cart_item.delete()
     
     return Response({'message': 'Cart item removed successfully'})
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def clear_cart(request):
+    """
+    Clear all items from the user's cart.
+    """
+    cart = get_or_create_cart(request.user)
+    cart.items.all().delete()  # Remove all cart items
+    
+    return Response({'message': 'Cart cleared successfully'}, status=200)
